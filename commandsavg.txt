@@ -1,0 +1,29 @@
+instalar python, luego ejecutar comandos
+
+pip install virtualenv
+
+cd  proyecto
+
+proyecto> python -m venv venv
+
+acceder a cd venv
+
+acceder a cd Script 
+
+y ejecutar active.bat
+
+validamos o verificamos usando comando python --version
+
+installar entorno web
+
+pip install flask
+
+#esto sale usando pip freeze
+#copiar en requirements.txt lo que salio con el comando pip freeze
+
+y ya puedes trabajar con codigo python
+
+
+
+
+

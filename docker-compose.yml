@@ -1,0 +1,15 @@
+version: '1_apirest'
+
+services:
+  flaskapp:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+
+#ejecutar contenedor
+#docker-compose up --build
+#
