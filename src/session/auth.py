@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+import os
+from dotenv import load_dotenv
+import jwt
+from flask import request, jsonify
 
 authsession_xuser = Blueprint("auth", __name__)
 
@@ -30,3 +34,21 @@ def protected():
     current_user = get_jwt_identity()
     return jsonify({"message": f"Hola, {current_user}. Estás autenticado."})
 
+@authsession_xuser.route("/verificatoken",methods=["GET"])
+#SECRET_KEY = 
+def token_user():
+    #llamad de Env    
+    load_dotenv()
+    SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        return jsonify({"msg": "Peligro Autorizacion incorrecta de header"}), 401
+    
+    try:
+        token = auth_header.split(" ")[1]  # Separa "Bearer" del token
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return decoded  # Si es válido, devuelve los datos
+    except jwt.ExpiredSignatureError:
+        return jsonify({"messageabraham": "Token expirado"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"messageabraham": "Token inválido"}), 401
