@@ -4,11 +4,14 @@ import os
 from dotenv import load_dotenv
 import jwt
 from flask import request, jsonify
+# from models.Userx import Userx
+
+# from app import db  # importa la instancia de la base de datos
 
 authsession_xuser = Blueprint("auth", __name__)
 
 # Base de datos simulada
-USERS = {"chicopython": "secret"}
+USERS = {"igecem_especialista284_avg@avg.edomex.com": "$secr4Toa"}
 
 # Login
 @authsession_xuser.route("/logsession", methods=["POST"])
@@ -21,16 +24,27 @@ USERS = {"chicopython": "secret"}
 def login():
     #recibimos un json de los datos del usuario, 
     data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-
-    if USERS.get(username) == password:
-        #si las credenciales coinciden
-        token = create_access_token(identity=username)
-        #se retorna un token resultante
-        return jsonify({"token": token}), 200
+    #extrayendo datos de vite post
+    values = data.get("values", {})
+    #username = data.get("username")
+    #password = data.get("password")
+    username = values.get("u")
+    password = values.get("p")    
+    #validamos si  hay campos vacios
+    if not username or not password:
+        #return jsonify({"error": "Faltan datos"}), 400
+        return jsonify({"error": 00}), 400 #00
+    #validamos si existen campos 
+    if username in USERS:
+        if USERS.get(username) == password:
+            #si las credenciales coinciden
+            token = create_access_token(identity=username)
+            #se retorna un token resultante
+            #return jsonify({"token": token,  "user": username, "password": password}), 200
+            return jsonify({"token": token}), 200
     #si no retorna un error
-    return jsonify({"error": "Credenciales inválidas"}), 401
+    #return jsonify({"error": "Credenciales inválidas"}), 401 #0
+    return jsonify({"error": 0}), 401 #0
 
 # Ruta protegida, SOLO SE PUEDE ACCEDER A ELLA MEDIANTE TOKEN DEL LADO DEL SERVIDOR
 @authsession_xuser.route("/inicio_a", methods=["GET"])
@@ -78,3 +92,38 @@ def token_user():
     "type": "access"
 }
 """
+
+
+# ELIMINAR O LIMPIAR EL TOKEN DE BACKEND ES COMO CERRAR SESION
+
+# REGISTRAR UN NUEVO USUARIO FLASK A NEON
+@authsession_xuser.route('/newflask', methods=["POST"])
+def newuserx():    
+     #recibimos un json de los datos del usuario, 
+    data = request.get_json()
+    #extrayendo datos de vite post
+    values = data.get("values", {})
+    name = values.get("uname")
+    username = values.get("u")
+    password = values.get("p")    
+    #validamos si  hay campos vacios
+    if not username or not password or not name:
+        #return jsonify({"error": "Faltan datos"}), 400
+        return jsonify({"error": 00}), 400 #00
+    #validamos si existen campos  en la base de datos
+    # existeuser = Userx.query.filter_by(nombre_usuario=username).first()
+    
+    # if existeuser:
+    #     return jsonify({"error": "Usuario ya existe"}), 409  # 409 Conflict
+
+    # # Si no existe, puedes registrarlo (opcional)
+    # newavguser = Userx(nombrex=name,nombre_usuario=username, pasword=password,rol=1)
+    # db.session.add(newavguser)
+    # db.session.commit()
+
+    # return jsonify({"msg": "Usuario creado correctamente"}), 201
+    
+    
+    return jsonify({"msg": username, "msg2": password, "msg3": name}), 200
+    # return jsonify({"msg": existeuser}), 200
+

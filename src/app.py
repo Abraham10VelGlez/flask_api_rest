@@ -9,7 +9,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 #PERMITE PETICIONES DESDE EL FRONT
-CORS(app)
+#CORS(app)
+CORS(app, origins="http://localhost:5175", supports_credentials=True)
 jwt = JWTManager(app)
 #funcion de ruotes para funcion inicial del API REST
 register_routex(app)

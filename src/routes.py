@@ -9,9 +9,8 @@ def home():
 
 @api_rest.route("/abc", methods=["GET"])
 def view1():
-    return "VISTA LIBRE DEL SISTEMA"
+    return "VISTA LIBRE DEL API DE FLASK PYTHON"
     
-
 def register_routex(app):
     #ruta inicial del api rest
     app.register_blueprint(api_rest)
